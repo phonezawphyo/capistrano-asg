@@ -1,6 +1,7 @@
 require 'capistrano/asg'
 
 namespace :asg do
+  desc "Update autoscaling"
   task :scale do
     set :aws_access_key_id,     fetch(:aws_access_key_id,     ENV['AWS_ACCESS_KEY_ID'])
     set :aws_secret_access_key, fetch(:aws_secret_access_key, ENV['AWS_SECRET_ACCESS_KEY'])
@@ -31,5 +32,10 @@ namespace :asg do
 
     set :asg_launch_config, asg_launch_config
     set :asg_ami_id, asg_ami_id
+  end
+
+  desc "List autoscaled instances"
+  task :list do
+    puts "====>"
   end
 end

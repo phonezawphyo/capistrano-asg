@@ -21,11 +21,11 @@ module Capistrano
         ec2_instance = ec2_resource.instance(base_ec2_instance.id)
         with_retry do
           @aws_counterpart = autoscaling_resource.create_launch_configuration(
-            key_pair: fetch(:aws_launch_configuration_key_name),
-            ramdisk_id: fetch(:aws_launch_configuration_ramdisk_id),
-            spot_price: fetch(:aws_launch_configuration_spot_price),
-            kernel_id: fetch(:aws_launch_configuration_kernel_id),
-            iam_instance_profile: fetch(:aws_launch_configuration_iam_instance_profile),
+            key_name: region_config.fetch(:aws_launch_configuration_key_name, nil),
+            ramdisk_id: region_config.fetch(:aws_launch_configuration_ramdisk_id, nil),
+            spot_price: region_config.fetch(:aws_launch_configuration_spot_price, nil),
+            kernel_id: region_config.fetch(:aws_launch_configuration_kernel_id, nil),
+            iam_instance_profile: region_config.fetch(:aws_launch_configuration_iam_instance_profile, nil),
             launch_configuration_name: name,
             image_id: ami.aws_counterpart.id,
             instance_type: instance_size,
@@ -34,7 +34,7 @@ module Capistrano
             instance_monitoring: {
               enabled: fetch(:aws_launch_configuration_detailed_instance_monitoring, true)
             },
-            user_data: region_config.fetch(:aws_launch_configuration_user_data, nil)
+            user_data: region_config.fetch(:aws_launch_configuration_user_data, nil),
           )
         end
       end
